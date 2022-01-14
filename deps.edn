@@ -1,0 +1,10 @@
+{:paths ["src" "resources"]
+
+ :mvn/repos {
+
+             "bedatadriven" {:url "https://nexus.bedatadriven.com/content/groups/public/"}}
+
+ :deps {
+
+        org.clojure/clojure {:mvn/version "1.10.3"}
+        clj-python/libpython-clj {:mvn/version "2.004"}}}
