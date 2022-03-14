@@ -7,4 +7,4 @@
  :deps {
 
         org.clojure/clojure {:mvn/version "1.10.3"}
-        clj-python/libpython-clj {:mvn/version "2.004"}}}
+        clj-python/libpython-clj {:mvn/version "2.018"}}}
