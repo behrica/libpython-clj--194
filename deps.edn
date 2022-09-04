@@ -5,6 +5,9 @@
              "bedatadriven" {:url "https://nexus.bedatadriven.com/content/groups/public/"}}
 
  :deps {
-
         org.clojure/clojure {:mvn/version "1.10.3"}
-        clj-python/libpython-clj {:mvn/version "2.018"}}}
+        clj-python/libpython-clj {:mvn/version "2.018"}}
+ :aliases
+ {
+  :nREPL {:extra-deps {nrepl/nrepl {:mvn/version "0.9.0"}}}
+  :manual-gil {:jvm-opts ["-Dlibpython_clj.manual_gil=true"]}}}
