@@ -21,18 +21,18 @@
 
 
 (println "train...")
-(py/with-gil
-  (let [
-        train-df (pd/DataFrame train-data)
-        eval-df (pd/DataFrame eval-data)
-      
-        model (ClassificationModel "roberta" "roberta-base" :use_cuda false :args
-                                   {:num_train_epochs 1
-                                    :use_multiprocessing false
-                                    :overwrite_output_dir true})
-                                    
 
-        x  (py. model train_model train-df)]
-    (println x)))
+(let [
+      train-df (pd/DataFrame train-data)
+      eval-df (pd/DataFrame eval-data)
+      
+      model (ClassificationModel "bert" "prajjwal1/bert-tiny" :use_cuda false :args
+                                 {:num_train_epochs 1
+                                  :use_multiprocessing false
+                                  :overwrite_output_dir true})
+
+
+      x  (py. model train_model train-df)]
+  (println x))
 
 (println "finished train")
