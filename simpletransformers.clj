@@ -4,11 +4,6 @@
          '[libpython-clj2.python.io-redirect]
          '[libpython-clj2.python :refer [py.- py.] :as py])
 
-;; (libpython-clj2.python.io-redirect/redirect-io!)
-
-;; (py/run-simple-string "import datasets.utils.tqdm_utils")
-;; (py/run-simple-string "datasets.utils.tqdm_utils.set_progress_bar_enabled(False)")
-
 
 
 (py/from-import simpletransformers.classification ClassificationModel)
@@ -31,10 +26,11 @@
         train-df (pd/DataFrame train-data)
         eval-df (pd/DataFrame eval-data)
       
-        model (ClassificationModel "roberta" "roberta-base" :use_cuda false :args { ;; :silent true
-                                                                                   :use_multiprocessing false
-                                                                                   :overwrite_output_dir true
-                                                                                   :dataloader_num_workers 1})
+        model (ClassificationModel "roberta" "roberta-base" :use_cuda false :args
+                                   {:num_train_epochs 1
+                                    :use_multiprocessing false
+                                    :overwrite_output_dir true})
+                                    
 
         x  (py. model train_model train-df)]
     (println x)))
