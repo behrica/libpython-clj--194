@@ -44,7 +44,8 @@
         train-df (pd/DataFrame train-data)
         eval-df (pd/DataFrame eval-data)
 
-        model (ClassificationModel "roberta" "roberta-base" :use_cuda false
+        model (ClassificationModel "bert" "prajjwal1/bert-tiny"
+                                   :use_cuda false
                                    :args {
                                           :overwrite_output_dir true
                                           :num_train_epochs 1})
