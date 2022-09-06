@@ -1,10 +1,11 @@
 (ns scicloj.ml.simpletransformers
-   (:require [libpython-clj2.python :refer [py.- py.] :as py]))
-
-  ;; Using the "(require ..)" macro makes it crash
-
+   (:require [libpython-clj2.python :refer [py.- py.] :as py]
+             [libpython-clj2.require :as py-require]))
 
 
+(py-require/require-python '[simpletransformers.classification
+                              :as classification])
+(py-require/require-python '[pandas :as pd])
 
 
 (def  train-data  [
@@ -18,25 +19,21 @@
                  ["Example eval sentence belonging to class 0" 0]])
 
 
-(println "train...")
-(py/with-gil-stack-rc-context           ;; without this it crashes
 
-  ;; having this outside of 'with-gil-stack-rc-context' makes it crash
- (py/from-import simpletransformers.classification ClassificationModel)
+(let [
+      train-df (pd/DataFrame train-data)
+      eval-df (pd/DataFrame eval-data)
 
+      model (classification/ClassificationModel
 
- (let [
-       pd (py/import-module "pandas")
-       train-df (py. pd DataFrame train-data)
-       eval-df (py. pd DataFrame eval-data)
-      
-       model (ClassificationModel "bert" "prajjwal1/bert-tiny" :use_cuda false :args
-                                  {:num_train_epochs 1
-                                   :use_multiprocessing false
-                                   :overwrite_output_dir true})
+             :use_cuda false
+             :model_type "bert"
+             :model_name "prajjwal1/bert-tiny"
+             :args
+             (py/->py-dict
+              {:num_train_epochs 5
+               :use_multiprocessing false
+               "overwrite_output_dir" true}))
+      x (py. model train_model train-df)]
 
-
-       x  (py. model train_model train-df)]
-   (println x)))
-
-(println "finished train")
+  (println x))
