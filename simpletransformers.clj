@@ -1,6 +1,7 @@
 (ns scicloj.ml.simpletransformers
    (:require [libpython-clj2.python :refer [py.- py.] :as py]))
 
+  ;; Using the "(require ..)" macro makes it crash
 
 
 
@@ -18,24 +19,24 @@
 
 
 (println "train...")
-(py/with-gil-stack-rc-context
+(py/with-gil-stack-rc-context           ;; without this it crashes
 
-  (py/from-import simpletransformers.classification ClassificationModel)
+  ;; having this outside of 'with-gil-stack-rc-context' makes it crash
+ (py/from-import simpletransformers.classification ClassificationModel)
 
 
-
-  (let [
-        pd (py/import-module "pandas")
-        train-df (py. pd DataFrame train-data)
-        eval-df (py. pd DataFrame eval-data)
+ (let [
+       pd (py/import-module "pandas")
+       train-df (py. pd DataFrame train-data)
+       eval-df (py. pd DataFrame eval-data)
       
-        model (ClassificationModel "bert" "prajjwal1/bert-tiny" :use_cuda false :args
-                                   {:num_train_epochs 1
-                                    :use_multiprocessing false
-                                    :overwrite_output_dir true})
+       model (ClassificationModel "bert" "prajjwal1/bert-tiny" :use_cuda false :args
+                                  {:num_train_epochs 1
+                                   :use_multiprocessing false
+                                   :overwrite_output_dir true})
 
 
-        x  (py. model train_model train-df)]
-    (println x)))
+       x  (py. model train_model train-df)]
+   (println x)))
 
 (println "finished train")
