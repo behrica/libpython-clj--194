@@ -4,12 +4,6 @@
 (java_api/initialize nil)
 
 
-;; (libpython-clj2.python.io-redirect/redirect-io!)
-
-;; (py/run-simple-string "import datasets.utils.tqdm_utils")
-;; (py/run-simple-string "datasets.utils.tqdm_utils.set_progress_bar_enabled(False)")
-
-
 (defmacro with-properties [property-map & body]
   `(let [pm# ~property-map
          props# (into {} (for [[k# v#] pm#]
@@ -51,16 +45,13 @@
         eval-df (pd/DataFrame eval-data)
 
         model (ClassificationModel "roberta" "roberta-base" :use_cuda false
-                                   :args { ;; :silent true
-                                          ;; :use_multiprocessing true
+                                   :args {
                                           :overwrite_output_dir true
-                                          :num_train_epochs 20})
-                                          ;; :process_count 2
-                                          ;; :dataloader_num_workers 2
+                                          :num_train_epochs 1})
 
 
 
         x  (py. model train_model train-df)]
    (println x)))
-;; (java_api/unlockGIL 1)
+(java_api/unlockGIL 1)
 (println "finished train")
